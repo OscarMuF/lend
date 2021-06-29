@@ -1,0 +1,30 @@
+<IfModule mod_headers.c>    
+    Header set Access-Control-Allow-Origin *
+</IfModule>
+
+<IfModule mod_security.c>
+    SecRuleRemoveById 218500
+</IfModule>
+
+AddDefaultCharset UTF-8
+RewriteEngine on
+
+DirectoryIndex app/index.php
+RewriteRule ^(.*)\.php$ app/index.php
+RewriteRule ^(.*)\.html$ app/index.php
+RewriteRule ^(.*)\.htm$ app/index.php
+RewriteRule ^(.*)\.me$ app/index.php
+RewriteRule ^api/(.*)$ app/index.php
+RewriteRule ^app/(.*)$ app/index.php
+
+#RewriteCond %{DOCUMENT_ROOT}public/$0 !-f
+#RewriteRule ^(.*)$ app/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$0 [PT,L]
+
+php_value upload_max_filesize 512M
+php_value post_max_size 512M
+php_value max_execution_time 300
+php_value max_input_time 300
